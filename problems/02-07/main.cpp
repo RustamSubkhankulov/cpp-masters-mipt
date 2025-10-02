@@ -1,8 +1,3 @@
-/*
-Доработайте Ваше решение задачи 02.06, используя встроенный динамический массив
-вместо статического.
-*/
-
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -29,11 +24,11 @@ int main() {
     return EXIT_FAILURE;
   }
 
-  double minVal = std::numeric_limits<double>::max();
-  double maxVal = std::numeric_limits<double>::lowest();
-  double summ = 0.;
+  double minVal = numbers[0];
+  double maxVal = numbers[0];
+  double summ = numbers[0];
 
-  for (unsigned ind = 0; ind < elemsNumber; ++ind) {
+  for (unsigned ind = 1; ind < elemsNumber; ++ind) {
 
     const auto& curNum = numbers[ind];
 

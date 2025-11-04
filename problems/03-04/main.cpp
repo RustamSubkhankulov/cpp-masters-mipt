@@ -1,5 +1,3 @@
-#include <type_traits>
-
 // Clients (forward decl)
 
 class Tester_v1;

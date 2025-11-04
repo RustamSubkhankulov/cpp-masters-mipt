@@ -1,6 +1,10 @@
+# Find GoogleTest
+find_package(GTest REQUIRED)
+
 function(add_problem problem_name)
     file(GLOB_RECURSE PROBLEM_SOURCES CONFIGURE_DEPENDS ${problem_name}/*.cpp)
     add_executable(${problem_name} ${PROBLEM_SOURCES})
+    target_link_libraries(${problem_name} GTest::gtest)
     message(STATUS "Added problem: ${problem_name}")
 endfunction()
 

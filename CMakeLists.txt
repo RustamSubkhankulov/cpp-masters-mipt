@@ -10,6 +10,14 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS False)
 
+find_program(CLANG_CXX_PATH clang++)
+if (CLANG_CXX_PATH)
+    set(CMAKE_CXX_COMPILER "clang++")
+    message(STATUS "clang++ found: ${CMAKE_CXX_COMPILER}")
+else()
+    message(STATUS "clang++ not found")
+endif()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 if(NOT CMAKE_BUILD_TYPE)

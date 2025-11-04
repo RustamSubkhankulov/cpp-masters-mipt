@@ -14,7 +14,7 @@ private:
   int y2_;
 
 public:
-  Rectangle(int x1, int y1, int x2, int y2)
+  explicit Rectangle(int x1, int y1, int x2, int y2)
     : x1_(x1)
     , y1_(y1)
     , x2_(x2)

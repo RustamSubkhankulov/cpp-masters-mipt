@@ -140,13 +140,19 @@ TEST(Triangle, Validity) {
   EXPECT_THROW(Triangle(1., 2., 3.5), std::invalid_argument);
   EXPECT_THROW(Triangle(10., 1., 1.), std::invalid_argument);
 
-  EXPECT_THROW(Triangle(std::numeric_limits<double>::infinity(), 2., 3.5), std::invalid_argument);
-  EXPECT_THROW(Triangle(1., std::numeric_limits<double>::infinity(), 3.5), std::invalid_argument);
-  EXPECT_THROW(Triangle(1., 2., std::numeric_limits<double>::infinity()), std::invalid_argument);
+  EXPECT_THROW(Triangle(std::numeric_limits<double>::infinity(), 2., 3.5),
+               std::invalid_argument);
+  EXPECT_THROW(Triangle(1., std::numeric_limits<double>::infinity(), 3.5),
+               std::invalid_argument);
+  EXPECT_THROW(Triangle(1., 2., std::numeric_limits<double>::infinity()),
+               std::invalid_argument);
 
-  EXPECT_THROW(Triangle(std::numeric_limits<double>::quiet_NaN(), 2., 3.5), std::invalid_argument);
-  EXPECT_THROW(Triangle(1., std::numeric_limits<double>::quiet_NaN(), 3.5), std::invalid_argument);
-  EXPECT_THROW(Triangle(1., 2., std::numeric_limits<double>::quiet_NaN()), std::invalid_argument);
+  EXPECT_THROW(Triangle(std::numeric_limits<double>::quiet_NaN(), 2., 3.5),
+               std::invalid_argument);
+  EXPECT_THROW(Triangle(1., std::numeric_limits<double>::quiet_NaN(), 3.5),
+               std::invalid_argument);
+  EXPECT_THROW(Triangle(1., 2., std::numeric_limits<double>::quiet_NaN()),
+               std::invalid_argument);
 }
 
 TEST(Square, Basic) {

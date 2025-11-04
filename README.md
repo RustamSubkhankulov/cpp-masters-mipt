@@ -8,7 +8,7 @@ Here's the <u>[link](https://github.com/i-s-m-mipt/Education)</u> to the course'
 
 Solutions added for the following problems:
 - Module 02: 02-02, 02-03, 02-06 - 02-10;
-- Module 03: 03-01 - 03-03;
+- Module 03: 03-01 - 03-07, 03-09;
 
 #### Building
 

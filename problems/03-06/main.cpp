@@ -2,10 +2,18 @@
 #include <cmath>
 #include <numbers>
 #include <stdexcept>
+#include <type_traits>
 
 #include <gtest/gtest.h>
 
-class Triangle final {
+class Shape {
+public:
+  virtual ~Shape() = default;
+  [[nodiscard]] virtual double perimeter() const noexcept = 0;
+  [[nodiscard]] virtual double area() const noexcept = 0;
+};
+
+class Triangle : public Shape {
 public:
   Triangle() = delete;
   explicit Triangle(double a, double b, double c)
@@ -15,11 +23,11 @@ public:
     validate_();
   }
 
-  [[nodiscard]] double perimeter() const noexcept {
+  [[nodiscard]] double perimeter() const noexcept override final {
     return a_ + b_ + c_;
   }
 
-  [[nodiscard]] double area() const noexcept {
+  [[nodiscard]] double area() const noexcept override final {
     const double p = perimeter();
     const double s = p / 2.;
     const double radicand = std::max(0., s * (s - a_) * (s - b_) * (s - c_));
@@ -54,7 +62,7 @@ private:
   }
 };
 
-class Square final {
+class Square final : public Shape {
 public:
   Square() = delete;
   explicit Square(double side)
@@ -62,11 +70,11 @@ public:
     validate_();
   }
 
-  [[nodiscard]] double perimeter() const noexcept {
+  [[nodiscard]] double perimeter() const noexcept override {
     return 4. * side_;
   }
 
-  [[nodiscard]] double area() const noexcept {
+  [[nodiscard]] double area() const noexcept override {
     return side_ * side_;
   }
 
@@ -87,7 +95,7 @@ private:
   }
 };
 
-class Circle final {
+class Circle final : public Shape {
 public:
   Circle() = delete;
   explicit Circle(double radius)
@@ -95,11 +103,11 @@ public:
     validate_();
   }
 
-  [[nodiscard]] double perimeter() const noexcept {
+  [[nodiscard]] double perimeter() const noexcept override {
     return 2. * std::numbers::pi_v<double> * radius_;
   }
 
-  [[nodiscard]] double area() const noexcept {
+  [[nodiscard]] double area() const noexcept override {
     return std::numbers::pi_v<double> * radius_ * radius_;
   }
 
@@ -186,6 +194,44 @@ TEST(CircleTest, Validity) {
                std::invalid_argument);
   EXPECT_THROW(Circle{std::numeric_limits<double>::quiet_NaN()},
                std::invalid_argument);
+}
+
+TEST(Polymorphism, Triangle) {
+  auto ptr = std::make_unique<Triangle>(3., 4., 5.);
+  EXPECT_DOUBLE_EQ(ptr->perimeter(), 12.);
+  EXPECT_DOUBLE_EQ(ptr->area(), 6.);
+}
+
+TEST(Polymorphism, Square) {
+  auto ptr = std::make_unique<Square>(2.);
+  EXPECT_DOUBLE_EQ(ptr->perimeter(), 8.);
+  EXPECT_DOUBLE_EQ(ptr->area(), 4.);
+}
+
+TEST(Polymorphism, Circle) {
+  auto ptr = std::make_unique<Circle>(1.);
+  EXPECT_DOUBLE_EQ(ptr->perimeter(), 2. * std::numbers::pi_v<double>);
+  EXPECT_DOUBLE_EQ(ptr->area(), std::numbers::pi_v<double>);
+}
+
+TEST(Polymorphism, VectorOfShapes) {
+  std::vector<std::unique_ptr<Shape>> shapes;
+  shapes.emplace_back(std::make_unique<Triangle>(3., 4., 5.));
+  shapes.emplace_back(std::make_unique<Square>(2.));
+  shapes.emplace_back(std::make_unique<Circle>(1.));
+
+  double totalP = 0.;
+  double totalA = 0.;
+  for (const auto& s : shapes) {
+    totalP += s->perimeter();
+    totalA += s->area();
+  }
+
+  const double expectedP = 12.0 + 8.0 + 2.0 * std::numbers::pi_v<double>;
+  const double expectedA = 6.0 + 4.0 + std::numbers::pi_v<double>;
+
+  EXPECT_DOUBLE_EQ(totalP, expectedP);
+  EXPECT_DOUBLE_EQ(totalA, expectedA);
 }
 
 } // namespace

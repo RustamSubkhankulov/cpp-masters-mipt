@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-class Rectangle {
+class Rectangle final {
 private:
   int x1_;
   int y1_;
@@ -80,8 +80,6 @@ public:
 
 enum class IntersectionType { Empty, Degenerate, Proper };
 
-namespace {
-
 IntersectionType classify(const Rectangle& r) {
   return (r.is_degenerate() ? IntersectionType::Degenerate
                             : IntersectionType::Proper);
@@ -124,7 +122,7 @@ std::optional<Rectangle> bounding_rectangle(const std::vector<Rectangle>& rs) {
   return acc;
 }
 
-} // namespace
+namespace {
 
 TEST(Rectangle, Invariants) {
   EXPECT_NO_THROW((Rectangle{0, 0, 0, 0}));
@@ -335,6 +333,8 @@ TEST(Bounding, NegativeCoordinates) {
   EXPECT_EQ(br->x2(), -1);
   EXPECT_EQ(br->y2(), -5);
 }
+
+} // namespace
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

@@ -2,7 +2,6 @@
 #include <cmath>
 #include <numbers>
 #include <stdexcept>
-#include <type_traits>
 
 #include <gtest/gtest.h>
 

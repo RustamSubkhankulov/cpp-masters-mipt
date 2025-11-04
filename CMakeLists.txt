@@ -21,15 +21,15 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-  message(STATUS "CMAKE_BUILD_TYPE is not specified, using Release by default")
+  set(CMAKE_BUILD_TYPE Debug)
+  message(STATUS "CMAKE_BUILD_TYPE is not specified, using Debug by default")
 endif()
 
 set(WARNING_CXX_FLAGS " -Wall -Wextra -Wpedantic")
 
 string(APPEND CMAKE_CXX_FLAGS ${WARNING_CXX_FLAGS})
 
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -O0 -g")
+string(APPEND CMAKE_CXX_FLAGS_DEBUG " -O0 -g -fsanitize=address -fsanitize=undefined")
 string(APPEND CMAKE_CXX_FLAGS_RELEASE " -O2")
 
 add_subdirectory(problems)

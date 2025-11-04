@@ -1,6 +1,6 @@
 #include <iostream>
 
-#define PROBLEM_02_03_USE_GCC_EXT
+// #define PROBLEM_02_03_USE_GCC_EXT
 
 int main() {
   char c;

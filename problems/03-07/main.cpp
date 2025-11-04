@@ -139,7 +139,7 @@ private:
     if (m_array && m_size) {
       std::copy(m_array, m_array + m_size, new_block);
     }
-    
+
     delete[] m_array;
     m_array = new_block;
     m_capacity = new_cap;
@@ -167,10 +167,10 @@ TEST(Basic, Default) {
 
 TEST(Basic, InitFromList) {
   Vector v{1, 2, 3, 4};
-  
+
   EXPECT_EQ(v.size(), 4uz);
   EXPECT_EQ(v.capacity(), 4uz);
-  
+
   ASSERT_FALSE(v.empty());
   EXPECT_EQ(v[0], 1);
   EXPECT_EQ(v[1], 2);
@@ -181,7 +181,7 @@ TEST(Basic, InitFromList) {
 TEST(Modify, Push) {
   Vector v;
   v.push_back(42);
-  
+
   EXPECT_EQ(v.size(), 1uz);
   EXPECT_GE(v.capacity(), 1uz);
   EXPECT_FALSE(v.empty());
@@ -223,7 +223,7 @@ TEST(Modify, Clear) {
   Vector v{10, 20, 30};
   auto cap_before = v.capacity();
   v.clear();
-  
+
   EXPECT_EQ(v.size(), 0uz);
   EXPECT_EQ(v.capacity(), cap_before);
   EXPECT_TRUE(v.empty());
@@ -237,9 +237,9 @@ TEST(Modify, Clear) {
 TEST(CopyCtor, Generic) {
   Vector a{7, 8, 9};
   a.push_back(10); // ensure non-trivial capacity
-  
+
   Vector b = a;
-  
+
   ASSERT_EQ(b.size(), a.size());
 
   a[0] = 100;
@@ -249,13 +249,13 @@ TEST(CopyCtor, Generic) {
 TEST(MoveCtor, Generic) {
   Vector a{1, 2, 3};
   a.push_back(4);
-  
+
   auto expected_size = a.size();
   auto expected_capacity = a.capacity();
   auto* expected_ptr = a.data();
 
   Vector b = std::move(a);
-  
+
   EXPECT_EQ(b.size(), expected_size);
   EXPECT_EQ(b.capacity(), expected_capacity);
   EXPECT_EQ(b.data(), expected_ptr);
@@ -271,10 +271,10 @@ TEST(MoveCtor, Generic) {
 TEST(CopyAssignment, Generic) {
   Vector a{1, 2, 3};
   Vector b{4, 5};
-  
+
   auto* ptr_before = b.data();
   b = a;
-  
+
   EXPECT_EQ(b.size(), a.size());
 
   EXPECT_EQ(b[0], 1);
@@ -289,15 +289,15 @@ TEST(Swap, Generic) {
   Vector a{1, 2, 3};
   Vector b;
   b.push_back(10); // capacity 1
-  
+
   auto a_ptr = a.data();
   auto b_ptr = b.data();
-  
+
   auto a_cap = a.capacity();
   auto b_cap = b.capacity();
 
   swap(a, b);
-  
+
   EXPECT_EQ(a.data(), b_ptr);
   EXPECT_EQ(b.data(), a_ptr);
   EXPECT_EQ(a.capacity(), b_cap);
@@ -305,7 +305,7 @@ TEST(Swap, Generic) {
 
   EXPECT_EQ(a.size(), 1uz);
   EXPECT_EQ(b.size(), 3uz);
-  
+
   EXPECT_EQ(a[0], 10);
   EXPECT_EQ(b[0], 1);
 }

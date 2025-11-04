@@ -56,6 +56,8 @@ struct Client final : public Adapter_v1, public Adapter_v2 {
   }
 };
 
+namespace {
+
 TEST(Entity_v1, TestCheck) {
   Entity_v1 e;
   EXPECT_EQ(e.test(), "Entity_v1::test");
@@ -87,6 +89,8 @@ TEST(ClientOverrides, AdaptorInterfaces) {
   Entity_v2& v2 = c;
   EXPECT_EQ(v2.test(), "Client::test_v2");
 }
+
+} // namespace
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

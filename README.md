@@ -7,7 +7,8 @@ This repo contains solutions for the problems from C++ master's degree course at
 Here's the <u>[link](https://github.com/i-s-m-mipt/Education)</u> to the course's repo.
 
 Solutions added for the following problems:
-- Module 02: 02-02, 02-03, 02-06 - 02-08;
+- Module 02: 02-02, 02-03, 02-06 - 02-10;
+- Module 03: 03-01;
 
 #### Building
 

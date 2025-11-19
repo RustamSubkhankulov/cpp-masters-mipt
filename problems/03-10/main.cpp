@@ -92,8 +92,6 @@ public:
     return left <=> right;
   }
 
-  // -------------------------------------------------------------------------------
-
   friend auto& operator>>(std::istream& stream, Rational& rational) {
     return (stream >> rational.m_num).ignore() >> rational.m_den;
   }

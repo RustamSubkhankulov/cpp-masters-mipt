@@ -29,7 +29,7 @@ public:
   }
 
   [[nodiscard]] constexpr operator std::uint32_t() const noexcept {
-    return this->to_uint32();
+    return to_uint32();
   }
 
   [[nodiscard]] std::string to_string() const {
@@ -39,7 +39,7 @@ public:
   }
 
   [[nodiscard]] operator std::string() const {
-    return this->to_string();
+    return to_string();
   }
 
   IPv4& operator++() noexcept {

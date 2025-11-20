@@ -14,7 +14,6 @@ public:
 
 class Triangle : public Shape {
 public:
-  Triangle() = delete;
   explicit Triangle(double a, double b, double c)
     : a_(a)
     , b_(b)

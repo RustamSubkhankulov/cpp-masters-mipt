@@ -93,11 +93,10 @@ intersection(const std::vector<Rectangle>& rs) {
   }
   std::optional<Rectangle> acc = rs.front();
   for (std::size_t i = 1uz; i < rs.size(); ++i) {
-    if (!acc)
-      return {IntersectionType::Empty, std::nullopt};
     acc = acc->intersect(rs[i]);
-    if (!acc)
+    if (!acc) {
       return {IntersectionType::Empty, std::nullopt};
+    }
   }
   return {classify(*acc), acc};
 }
@@ -105,16 +104,18 @@ intersection(const std::vector<Rectangle>& rs) {
 // Area of intersection of many rectangles (0 for empty or degenerate).
 int64_t intersection_area(const std::vector<Rectangle>& rs) {
   auto [type, r] = intersection(rs);
-  if (type != IntersectionType::Proper)
+  if (type != IntersectionType::Proper) {
     return 0;
+  }
   return r->area();
 }
 
 // Minimal bounding rectangle that contains all input rectangles; std::nullopt
 // if empty input.
 std::optional<Rectangle> bounding_rectangle(const std::vector<Rectangle>& rs) {
-  if (rs.empty())
+  if (rs.empty()) {
     return std::nullopt;
+  }
   Rectangle acc = rs.front();
   for (std::size_t i = 1uz; i < rs.size(); ++i) {
     acc = acc.combine(rs[i]);

@@ -12,7 +12,10 @@ endfunction()
 file(GLOB PROBLEM_DIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *)
 foreach(problem_dir ${PROBLEM_DIRS})
     if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${problem_dir}
-       AND NOT problem_dir STREQUAL "06-04")
+       AND NOT problem_dir STREQUAL "06-04"
+       AND NOT problem_dir STREQUAL "06-05")
         add_problem(${problem_dir})
     endif()
 endforeach()
+
+add_subdirectory(06-05)

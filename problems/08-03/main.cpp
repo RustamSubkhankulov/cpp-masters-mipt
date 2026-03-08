@@ -1,5 +1,4 @@
 #include <bit>
-#include <cstring>
 #include <limits>
 #include <optional>
 
@@ -25,27 +24,15 @@ struct FloatFormat final {
   static constexpr unsigned int sign_mask = 1U << (unsigned_bit_count - 1U);
 };
 
-union FloatBits {
-  float float_value;
-  unsigned int uint_value;
-};
-
 static_assert(sizeof(int) == 4U);
 static_assert(sizeof(unsigned int) == 4U);
 static_assert(sizeof(float) == 4U);
-static_assert(sizeof(FloatBits) == sizeof(float));
-static_assert(sizeof(FloatBits) == sizeof(unsigned int));
 static_assert(std::numeric_limits<int>::digits == 31);
 static_assert(std::numeric_limits<unsigned int>::digits == 32);
 static_assert(std::numeric_limits<float>::is_iec559);
 
 [[nodiscard]] unsigned int FloatToUnsignedBits(float value) {
-  FloatBits storage{};
-  storage.float_value = value;
-
-  unsigned int bits = 0U;
-  std::memcpy(&bits, &storage, sizeof(bits));
-  return bits;
+  return std::bit_cast<unsigned int>(value);
 }
 
 [[nodiscard]] std::optional<int>

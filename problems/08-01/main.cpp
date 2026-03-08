@@ -30,27 +30,6 @@ void FraudulentlyRewriteWithReinterpretCast(Entity_v1& entity,
   public_view.value = new_value;
 }
 
-template <typename Tag, typename Tag::type member_pointer>
-struct PrivateMemberExposer final {
-  friend constexpr typename Tag::type GetPrivateMemberPointer(Tag) noexcept {
-    return member_pointer;
-  }
-};
-
-struct EntityValueTag final {
-  using type = int Entity_v1::*;
-
-  friend constexpr type GetPrivateMemberPointer(EntityValueTag) noexcept;
-};
-
-template struct PrivateMemberExposer<EntityValueTag, &Entity_v1::value_>;
-
-void FraudulentlyRewriteWithInjectedMemberPointer(
-  Entity_v1& entity, const int new_value) noexcept {
-  constexpr auto member_pointer = GetPrivateMemberPointer(EntityValueTag{});
-  entity.*member_pointer = new_value;
-}
-
 using RewriteFunction = void (*)(Entity_v1&, int) noexcept;
 
 void CheckRewrite(const RewriteFunction rewrite) {
@@ -66,26 +45,6 @@ void CheckRewrite(const RewriteFunction rewrite) {
 
 TEST(EntityFraudTest, ReinterpretCastAllowsExternalOverwrite) {
   CheckRewrite(&FraudulentlyRewriteWithReinterpretCast);
-}
-
-TEST(EntityFraudTest, InjectedMemberPointerAllowsExternalOverwrite) {
-  CheckRewrite(&FraudulentlyRewriteWithInjectedMemberPointer);
-}
-
-TEST(EntityFraudTest, DifferentFraudSystemsCanBeAppliedSequentially) {
-  constexpr int kInitialValue = 1;
-  constexpr int kIntermediateValue = 2;
-  constexpr int kFinalValue = 3;
-
-  Entity_v1 entity{kInitialValue};
-
-  ASSERT_EQ(entity.Read(), kInitialValue);
-
-  FraudulentlyRewriteWithReinterpretCast(entity, kIntermediateValue);
-  ASSERT_EQ(entity.Read(), kIntermediateValue);
-
-  FraudulentlyRewriteWithInjectedMemberPointer(entity, kFinalValue);
-  EXPECT_EQ(entity.Read(), kFinalValue);
 }
 
 int main(int argc, char** argv) {

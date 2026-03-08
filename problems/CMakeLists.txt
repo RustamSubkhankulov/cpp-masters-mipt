@@ -5,7 +5,6 @@ function(add_problem problem_name)
     file(GLOB_RECURSE PROBLEM_SOURCES CONFIGURE_DEPENDS ${problem_name}/*.cpp)
     add_executable(${problem_name} ${PROBLEM_SOURCES})
     target_link_libraries(${problem_name} GTest::gtest)
-    target_link_libraries(${problem_name} benchmark::benchmark)
     message(STATUS "Added problem: ${problem_name}")
 endfunction()
 
@@ -17,5 +16,7 @@ foreach(problem_dir ${PROBLEM_DIRS})
         add_problem(${problem_dir})
     endif()
 endforeach()
+
+target_link_libraries(07-05 benchmark::benchmark)
 
 add_subdirectory(06-05)

@@ -1,8 +1,8 @@
 #include <compare>
 #include <exception>
 #include <ios>
-#include <istream>
 #include <iostream>
+#include <istream>
 #include <limits>
 #include <new>
 #include <numeric>
@@ -76,8 +76,8 @@ struct decrementable {
 
 class Exception final : public std::exception {
 public:
-  explicit Exception(char const* message) noexcept : message_(message) {
-  }
+  explicit Exception(char const* message) noexcept
+    : message_(message) {}
 
   auto what() const noexcept -> char const* override {
     return message_;
@@ -98,7 +98,8 @@ public:
   using value_type = T;
 
   Rational(T numerator = T{}, T denominator = T{1})
-      : numerator_(numerator), denominator_(denominator) {
+    : numerator_(numerator)
+    , denominator_(denominator) {
     if (denominator_ == zero_value()) {
       throw Exception("zero denominator");
     }
@@ -155,8 +156,8 @@ public:
     T denominator{};
     char separator = '\0';
 
-    if (!(stream >> numerator >> separator >> denominator) || separator != '/' ||
-        denominator == zero_value()) {
+    if (!(stream >> numerator >> separator >> denominator) ||
+        separator != '/' || denominator == zero_value()) {
       stream.setstate(std::ios::failbit);
       return stream;
     }
@@ -388,7 +389,7 @@ TEST(RationalDemo, MixedSyntaxScenario) {
   EXPECT_EQ(value, IntRational(5, 4));
 }
 
-}  // namespace
+} // namespace
 
 int main(int argc, char** argv) {
   try {

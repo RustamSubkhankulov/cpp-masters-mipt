@@ -9,20 +9,12 @@ using TwoRoots = std::pair<double, double>;
 using RootValue = std::variant<double, TwoRoots, std::monostate>;
 using SolveResult = std::optional<RootValue>;
 
-constexpr double epsilon() noexcept {
-  return 1e-10;
-}
-
-constexpr double two() noexcept {
-  return 2.0;
-}
-
-constexpr double four() noexcept {
-  return 4.0;
-}
+constexpr double kEpsilon = 1e-10;
+constexpr double kTwo = 2.0;
+constexpr double kFour = 4.0;
 
 bool isZero(double value) noexcept {
-  return std::abs(value) < epsilon();
+  return std::abs(value) < kEpsilon;
 }
 
 double normalizeZero(double value) noexcept {
@@ -50,26 +42,26 @@ SolveResult solve(double a, double b, double c) {
     return RootValue{normalizeZero(-c / b)};
   }
 
-  const double discriminant = b * b - four() * a * c;
-  if (discriminant > epsilon()) {
+  const double discriminant = b * b - kFour * a * c;
+  if (discriminant > kEpsilon) {
     const double sqrtDiscriminant = std::sqrt(discriminant);
-    const double denominator = two() * a;
+    const double denominator = kTwo * a;
     const double firstRoot = (-b - sqrtDiscriminant) / denominator;
     const double secondRoot = (-b + sqrtDiscriminant) / denominator;
     return RootValue{makeOrderedRoots(firstRoot, secondRoot)};
   }
 
-  if (discriminant < -epsilon()) {
+  if (discriminant < -kEpsilon) {
     return std::nullopt;
   }
 
-  return RootValue{normalizeZero(-b / (two() * a))};
+  return RootValue{normalizeZero(-b / (kTwo * a))};
 }
 
 namespace {
 
 bool areClose(double left, double right) noexcept {
-  return std::abs(left - right) < epsilon();
+  return std::abs(left - right) < kEpsilon;
 }
 
 void expectNoRoots(const SolveResult& result) {
@@ -88,10 +80,8 @@ void expectSingleRoot(const SolveResult& result, double expectedRoot) {
   EXPECT_TRUE(areClose(actualRoot, expectedRoot));
 }
 
-void expectTwoRoots(
-    const SolveResult& result,
-    double expectedFirstRoot,
-    double expectedSecondRoot) {
+void expectTwoRoots(const SolveResult& result, double expectedFirstRoot,
+                    double expectedSecondRoot) {
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE(std::holds_alternative<TwoRoots>(*result));
   const TwoRoots& actualRoots = std::get<TwoRoots>(*result);
@@ -128,7 +118,7 @@ TEST(SolveTest, ReturnsNoRootsForNegativeDiscriminant) {
 }
 
 TEST(SolveTest, TreatsSmallCoefficientsAsZero) {
-  expectInfiniteRoots(solve(epsilon() / two(), epsilon() / two(), epsilon() / two()));
+  expectInfiniteRoots(solve(kEpsilon / kTwo, kEpsilon / kTwo, kEpsilon / kTwo));
 }
 
 TEST(SolveTest, NormalizesNegativeZeroForLinearRoot) {
@@ -157,7 +147,7 @@ TEST(DemoExampleTest, DemonstratesInfiniteSolutionsCase) {
   expectInfiniteRoots(solve(0.0, 0.0, 0.0));
 }
 
-}  // namespace
+} // namespace
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

@@ -30,8 +30,7 @@ void insertion(std::vector<T>& values, std::size_t left, std::size_t right) {
 }
 
 template <typename T>
-T median_of_three(std::vector<T>& values, std::size_t left,
-                  std::size_t right) {
+T median_of_three(std::vector<T>& values, std::size_t left, std::size_t right) {
   const std::size_t middle = std::midpoint(left, right);
 
   if (values[right] < values[left]) {
@@ -100,7 +99,7 @@ std::vector<int> make_descending_int_vector(std::size_t size) {
 std::vector<int> make_random_int_vector(std::size_t size) {
   std::mt19937 generator(kRandomSeed);
   std::uniform_int_distribution<int> distribution(
-      std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+    std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
   std::vector<int> values;
   values.reserve(size);
@@ -130,7 +129,7 @@ void expect_quick_sort_matches_std_sort(const std::vector<T>& input) {
   EXPECT_TRUE(std::ranges::is_sorted(actual));
 }
 
-}  // namespace
+} // namespace
 
 template <typename T>
 void quick_sort(std::vector<T>& values) {
@@ -151,17 +150,17 @@ TEST(QuickSortTest, SortsSingleElementVector) {
 
 TEST(QuickSortTest, SortsVectorAtInsertionCutoff) {
   expect_quick_sort_matches_std_sort(
-      make_descending_int_vector(kInsertionSortCutoff));
+    make_descending_int_vector(kInsertionSortCutoff));
 }
 
 TEST(QuickSortTest, SortsVectorAboveInsertionCutoff) {
   expect_quick_sort_matches_std_sort(
-      make_descending_int_vector(kInsertionSortCutoff + 1));
+    make_descending_int_vector(kInsertionSortCutoff + 1));
 }
 
 TEST(QuickSortTest, SortsVectorWithRepeatedValues) {
   expect_quick_sort_matches_std_sort(
-      std::vector<int>{7, -3, 7, 0, -3, 4, 4, 4, 1, 7, -3});
+    std::vector<int>{7, -3, 7, 0, -3, 4, 4, 4, 1, 7, -3});
 }
 
 TEST(QuickSortTest, SortsLargeRandomVector) {
@@ -170,7 +169,7 @@ TEST(QuickSortTest, SortsLargeRandomVector) {
 
 TEST(QuickSortTest, SortsUserDefinedType) {
   expect_quick_sort_matches_std_sort(
-      std::vector<Box>{{5}, {-1}, {8}, {8}, {0}, {-7}, {3}, {3}});
+    std::vector<Box>{{5}, {-1}, {8}, {8}, {0}, {-7}, {3}, {3}});
 }
 
 int main(int argc, char** argv) {

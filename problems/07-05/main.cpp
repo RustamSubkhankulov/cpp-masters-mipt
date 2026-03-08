@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <benchmark/benchmark.h>
 #include <cstddef>
+#include <numeric>
 #include <utility>
 #include <vector>
-#include <numeric>
 
 template <typename T>
 void quick_sort(std::vector<T>& values, std::size_t insertion_sort_cutoff);
@@ -27,8 +27,7 @@ void insertion(std::vector<T>& values, std::size_t left, std::size_t right) {
 }
 
 template <typename T>
-T median_of_three(std::vector<T>& values, std::size_t left,
-                  std::size_t right) {
+T median_of_three(std::vector<T>& values, std::size_t left, std::size_t right) {
   const std::size_t middle = std::midpoint(left, right);
 
   if (values[right] < values[left]) {
@@ -96,9 +95,9 @@ std::vector<double> make_reverse_sorted_vector(std::size_t size) {
 
 void benchmark_quick_sort_reverse_sorted(benchmark::State& state) {
   const std::size_t insertion_sort_cutoff =
-      static_cast<std::size_t>(state.range(0));
+    static_cast<std::size_t>(state.range(0));
   const std::vector<double> source =
-      make_reverse_sorted_vector(kBenchmarkContainerSize);
+    make_reverse_sorted_vector(kBenchmarkContainerSize);
 
   std::vector<double> values;
   values.reserve(source.size());
@@ -121,13 +120,12 @@ void benchmark_quick_sort_reverse_sorted(benchmark::State& state) {
   }
 
   state.SetItemsProcessed(
-      static_cast<int64_t>(state.iterations() * source.size()));
-  state.SetBytesProcessed(static_cast<int64_t>(state.iterations() *
-                                               source.size() *
-                                               sizeof(source.front())));
+    static_cast<int64_t>(state.iterations() * source.size()));
+  state.SetBytesProcessed(static_cast<int64_t>(
+    state.iterations() * source.size() * sizeof(source.front())));
 }
 
-}  // namespace
+} // namespace
 
 template <typename T>
 void quick_sort(std::vector<T>& values, std::size_t insertion_sort_cutoff) {
@@ -139,8 +137,8 @@ void quick_sort(std::vector<T>& values, std::size_t insertion_sort_cutoff) {
 }
 
 BENCHMARK(benchmark_quick_sort_reverse_sorted)
-    ->DenseRange(static_cast<int>(kMinInsertionSortCutoff),
-                 static_cast<int>(kMaxInsertionSortCutoff),
-                 static_cast<int>(kInsertionSortCutoffStep));
+  ->DenseRange(static_cast<int>(kMinInsertionSortCutoff),
+               static_cast<int>(kMaxInsertionSortCutoff),
+               static_cast<int>(kInsertionSortCutoffStep));
 
 BENCHMARK_MAIN();

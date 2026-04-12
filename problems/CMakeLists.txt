@@ -18,5 +18,6 @@ foreach(problem_dir ${PROBLEM_DIRS})
 endforeach()
 
 target_link_libraries(07-05 benchmark::benchmark)
+target_link_libraries(09-09 benchmark::benchmark)
 
 add_subdirectory(06-05)

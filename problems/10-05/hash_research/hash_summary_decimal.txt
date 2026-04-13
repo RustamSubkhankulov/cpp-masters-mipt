@@ -1,0 +1,18 @@
+Dataset: decimal strings from 0 to N - 1
+Buckets: 65521
+Final string count: 100000
+Expected random collisions at final point: 48720.1
+
+Best function: DJBHash with 40729 collisions
+Worst function: DEKHash with 79230 collisions
+
+Ranking:
+DJBHash,40729
+RSHash,42366
+SDBMHash,43331
+BKDRHash,47345
+JSHash,47997
+APHash,48725
+ELFHash,73023
+PJWHash,73023
+DEKHash,79230

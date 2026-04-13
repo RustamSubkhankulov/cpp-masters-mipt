@@ -20,4 +20,7 @@ endforeach()
 target_link_libraries(07-05 benchmark::benchmark)
 target_link_libraries(09-09 benchmark::benchmark)
 
+target_compile_options(10-05 PRIVATE -O3 -m32)
+target_link_options(10-05 PRIVATE -m32)
+
 add_subdirectory(06-05)

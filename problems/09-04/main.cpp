@@ -112,7 +112,7 @@ struct Item {
   auto operator<=>(const Item&) const = default;
 };
 
-}  // namespace
+} // namespace
 
 template <std::random_access_iterator RandomIt>
 void quick_sort(RandomIt first, RandomIt last) {
@@ -164,8 +164,8 @@ TEST(QuickSortTest, SortsDeque) {
 }
 
 TEST(QuickSortTest, SortsStrings) {
-  std::vector<std::string> values{
-      "pear", "apple", "orange", "banana", "banana", "kiwi"};
+  std::vector<std::string> values{"pear",   "apple",  "orange",
+                                  "banana", "banana", "kiwi"};
 
   quick_sort(values.begin(), values.end());
 
@@ -173,8 +173,7 @@ TEST(QuickSortTest, SortsStrings) {
 }
 
 TEST(QuickSortTest, SortsCustomType) {
-  std::vector<Item> values{
-      {3, 30}, {1, 10}, {2, 20}, {1, 5}, {3, 25}, {2, 15}};
+  std::vector<Item> values{{3, 30}, {1, 10}, {2, 20}, {1, 5}, {3, 25}, {2, 15}};
 
   quick_sort(values.begin(), values.end());
 

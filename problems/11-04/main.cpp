@@ -95,7 +95,7 @@ struct ExtractedRoots {
 };
 
 class Visitor {
- public:
+public:
   ExtractedRoots operator()(double root) const noexcept {
     return {RootKind::kSingle, {root, 0.0}, singleRootCount()};
   }
@@ -181,13 +181,13 @@ TEST(SolveTest, ReturnsNoRootsForNegativeDiscriminant) {
 }
 
 TEST(SolveTest, TreatsSmallCoefficientsAsZero) {
-  expectInfiniteRoots(solve(epsilon() / two(), epsilon() / two(),
-                            epsilon() / two()));
+  expectInfiniteRoots(
+    solve(epsilon() / two(), epsilon() / two(), epsilon() / two()));
 }
 
 TEST(SolveTest, NormalizesNegativeZeroForLinearRoot) {
   const std::optional<ExtractedRoots> extractedRoots =
-      extractRoots(solve(0.0, 1.0, 0.0));
+    extractRoots(solve(0.0, 1.0, 0.0));
   ASSERT_TRUE(extractedRoots.has_value());
   ASSERT_EQ(extractedRoots->kind, RootKind::kSingle);
   EXPECT_FALSE(std::signbit(extractedRoots->roots.front()));
@@ -195,7 +195,7 @@ TEST(SolveTest, NormalizesNegativeZeroForLinearRoot) {
 
 TEST(SolveTest, NormalizesNegativeZeroForQuadraticDoubleRoot) {
   const std::optional<ExtractedRoots> extractedRoots =
-      extractRoots(solve(1.0, 0.0, 0.0));
+    extractRoots(solve(1.0, 0.0, 0.0));
   ASSERT_TRUE(extractedRoots.has_value());
   ASSERT_EQ(extractedRoots->kind, RootKind::kSingle);
   EXPECT_FALSE(std::signbit(extractedRoots->roots.front()));
@@ -240,7 +240,7 @@ TEST(DemoExampleTest, DemonstratesInfiniteSolutionsCase) {
   expectInfiniteRoots(solve(0.0, 0.0, 0.0));
 }
 
-}  // namespace
+} // namespace
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

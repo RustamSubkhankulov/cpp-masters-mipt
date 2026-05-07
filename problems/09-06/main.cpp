@@ -10,11 +10,14 @@
 #include <gtest/gtest.h>
 
 class Iterator
-    : public boost::iterator_facade<Iterator, const int, boost::forward_traversal_tag, int> {
- public:
-  Iterator() noexcept : older_(kSecondValue), newer_(kFirstValue) {}
+  : public boost::iterator_facade<Iterator, const int,
+                                  boost::forward_traversal_tag, int> {
+public:
+  Iterator() noexcept
+    : older_(kSecondValue)
+    , newer_(kFirstValue) {}
 
- private:
+private:
   friend class boost::iterator_core_access;
 
   static constexpr int kFirstValue = 0;
@@ -68,14 +71,15 @@ std::vector<int> ComputeFibonacciWithGenerateN(const std::size_t count) {
 
   Iterator iterator;
   std::size_t index = 0;
-  std::generate_n(std::back_inserter(values), static_cast<std::ptrdiff_t>(count), [&]() {
-    const int value = *iterator;
-    ++index;
-    if (index != count) {
-      ++iterator;
-    }
-    return value;
-  });
+  std::generate_n(std::back_inserter(values),
+                  static_cast<std::ptrdiff_t>(count), [&]() {
+                    const int value = *iterator;
+                    ++index;
+                    if (index != count) {
+                      ++iterator;
+                    }
+                    return value;
+                  });
 
   return values;
 }
@@ -140,7 +144,8 @@ TEST(FibonacciAlgorithmTest, GenerateNBasedAlgorithmBuildsExpectedPrefix) {
 
 TEST(FibonacciAlgorithmTest, BothAlgorithmsProduceIdenticalSequences) {
   constexpr std::size_t kCount = 20;
-  EXPECT_EQ(ComputeFibonacciWithLoop(kCount), ComputeFibonacciWithGenerateN(kCount));
+  EXPECT_EQ(ComputeFibonacciWithLoop(kCount),
+            ComputeFibonacciWithGenerateN(kCount));
 }
 
 TEST(FibonacciAlgorithmTest, AlgorithmsHandleEmptySequence) {
@@ -152,8 +157,10 @@ TEST(FibonacciAlgorithmTest, AlgorithmsSupportLargestSafePrefixForInt) {
   constexpr std::size_t kLargestSafeCount = 47;
   constexpr int kLargestFibonacciInInt = 1836311903;
 
-  const std::vector<int> loop_values = ComputeFibonacciWithLoop(kLargestSafeCount);
-  const std::vector<int> algorithm_values = ComputeFibonacciWithGenerateN(kLargestSafeCount);
+  const std::vector<int> loop_values =
+    ComputeFibonacciWithLoop(kLargestSafeCount);
+  const std::vector<int> algorithm_values =
+    ComputeFibonacciWithGenerateN(kLargestSafeCount);
 
   ASSERT_FALSE(loop_values.empty());
   ASSERT_FALSE(algorithm_values.empty());
@@ -163,11 +170,13 @@ TEST(FibonacciAlgorithmTest, AlgorithmsSupportLargestSafePrefixForInt) {
   EXPECT_EQ(loop_values, algorithm_values);
 }
 
-TEST(FibonacciAlgorithmTest, AlgorithmsThrowOnOverflowInsteadOfTriggeringUndefinedBehavior) {
+TEST(FibonacciAlgorithmTest,
+     AlgorithmsThrowOnOverflowInsteadOfTriggeringUndefinedBehavior) {
   constexpr std::size_t kOverflowCount = 48;
 
   EXPECT_THROW(ComputeFibonacciWithLoop(kOverflowCount), std::overflow_error);
-  EXPECT_THROW(ComputeFibonacciWithGenerateN(kOverflowCount), std::overflow_error);
+  EXPECT_THROW(ComputeFibonacciWithGenerateN(kOverflowCount),
+               std::overflow_error);
 }
 
 int main(int argc, char** argv) {

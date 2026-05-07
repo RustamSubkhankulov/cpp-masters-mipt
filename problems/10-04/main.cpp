@@ -46,150 +46,155 @@ constexpr std::size_t kMatrixSize = 2U;
 constexpr ValueType kMaxSupportedIndex = 93ULL;
 
 MatrixType MakeZeroMatrix() {
-    MatrixType matrix(kMatrixSize, kMatrixSize);
-    for (std::size_t row = 0; row < kMatrixSize; ++row) {
-        for (std::size_t column = 0; column < kMatrixSize; ++column) {
-            matrix(row, column) = 0ULL;
-        }
+  MatrixType matrix(kMatrixSize, kMatrixSize);
+  for (std::size_t row = 0; row < kMatrixSize; ++row) {
+    for (std::size_t column = 0; column < kMatrixSize; ++column) {
+      matrix(row, column) = 0ULL;
     }
-    return matrix;
+  }
+  return matrix;
 }
 
 MatrixType MakeIdentityMatrix() {
-    MatrixType matrix = MakeZeroMatrix();
-    for (std::size_t index = 0; index < kMatrixSize; ++index) {
-        matrix(index, index) = 1ULL;
-    }
-    return matrix;
+  MatrixType matrix = MakeZeroMatrix();
+  for (std::size_t index = 0; index < kMatrixSize; ++index) {
+    matrix(index, index) = 1ULL;
+  }
+  return matrix;
 }
 
 MatrixType MakeBaseMatrix() {
-    MatrixType matrix = MakeZeroMatrix();
-    matrix(0U, 0U) = 1ULL;
-    matrix(0U, 1U) = 1ULL;
-    matrix(1U, 0U) = 1ULL;
-    matrix(1U, 1U) = 0ULL;
-    return matrix;
+  MatrixType matrix = MakeZeroMatrix();
+  matrix(0U, 0U) = 1ULL;
+  matrix(0U, 1U) = 1ULL;
+  matrix(1U, 0U) = 1ULL;
+  matrix(1U, 1U) = 0ULL;
+  return matrix;
 }
 
 MatrixType MultiplyMatrices(const MatrixType& left, const MatrixType& right) {
-    MatrixType result = MakeZeroMatrix();
+  MatrixType result = MakeZeroMatrix();
 
-    for (std::size_t row = 0; row < kMatrixSize; ++row) {
-        for (std::size_t column = 0; column < kMatrixSize; ++column) {
-            ValueType value = 0ULL;
-            for (std::size_t inner = 0; inner < kMatrixSize; ++inner) {
-                value += left(row, inner) * right(inner, column);
-            }
-            result(row, column) = value;
-        }
+  for (std::size_t row = 0; row < kMatrixSize; ++row) {
+    for (std::size_t column = 0; column < kMatrixSize; ++column) {
+      ValueType value = 0ULL;
+      for (std::size_t inner = 0; inner < kMatrixSize; ++inner) {
+        value += left(row, inner) * right(inner, column);
+      }
+      result(row, column) = value;
     }
+  }
 
-    return result;
+  return result;
 }
 
 MatrixType PowerMatrix(ValueType exponent) {
-    MatrixType result = MakeIdentityMatrix();
-    MatrixType factor = MakeBaseMatrix();
+  MatrixType result = MakeIdentityMatrix();
+  MatrixType factor = MakeBaseMatrix();
 
-    while (exponent > 0ULL) {
-        if ((exponent & 1ULL) != 0ULL) {
-            result = MultiplyMatrices(result, factor);
-        }
-
-        exponent >>= 1ULL;
-        if (exponent > 0ULL) {
-            factor = MultiplyMatrices(factor, factor);
-        }
+  while (exponent > 0ULL) {
+    if ((exponent & 1ULL) != 0ULL) {
+      result = MultiplyMatrices(result, factor);
     }
 
-    return result;
+    exponent >>= 1ULL;
+    if (exponent > 0ULL) {
+      factor = MultiplyMatrices(factor, factor);
+    }
+  }
+
+  return result;
 }
 
 ValueType Compute(ValueType index) {
-    if (index > kMaxSupportedIndex) {
-        throw std::overflow_error("Fibonacci value does not fit into unsigned long long int");
-    }
+  if (index > kMaxSupportedIndex) {
+    throw std::overflow_error(
+      "Fibonacci value does not fit into unsigned long long int");
+  }
 
-    if (index == 0ULL) {
-        return 0ULL;
-    }
+  if (index == 0ULL) {
+    return 0ULL;
+  }
 
-    const MatrixType powered = PowerMatrix(index);
-    return powered(0U, 1U);
+  const MatrixType powered = PowerMatrix(index);
+  return powered(0U, 1U);
 }
 
 ValueType ComputeReferenceIterative(ValueType index) {
-    if (index > kMaxSupportedIndex) {
-        throw std::overflow_error("Reference Fibonacci value does not fit into unsigned long long int");
-    }
+  if (index > kMaxSupportedIndex) {
+    throw std::overflow_error(
+      "Reference Fibonacci value does not fit into unsigned long long int");
+  }
 
-    if (index == 0ULL) {
-        return 0ULL;
-    }
+  if (index == 0ULL) {
+    return 0ULL;
+  }
 
-    ValueType previous = 0ULL;
-    ValueType current = 1ULL;
+  ValueType previous = 0ULL;
+  ValueType current = 1ULL;
 
-    for (ValueType step = 1ULL; step < index; ++step) {
-        const ValueType next = previous + current;
-        previous = current;
-        current = next;
-    }
+  for (ValueType step = 1ULL; step < index; ++step) {
+    const ValueType next = previous + current;
+    previous = current;
+    current = next;
+  }
 
-    return current;
+  return current;
 }
 
-}  // namespace fibonacci_matrix
+} // namespace fibonacci_matrix
 
 TEST(FibonacciMatrixTest, ReturnsCorrectValuesForDemoExamples) {
-    using fibonacci_matrix::Compute;
+  using fibonacci_matrix::Compute;
 
-    EXPECT_EQ(Compute(0ULL), 0ULL);
-    EXPECT_EQ(Compute(1ULL), 1ULL);
-    EXPECT_EQ(Compute(2ULL), 1ULL);
-    EXPECT_EQ(Compute(3ULL), 2ULL);
-    EXPECT_EQ(Compute(10ULL), 55ULL);
-    EXPECT_EQ(Compute(20ULL), 6765ULL);
-    EXPECT_EQ(Compute(30ULL), 832040ULL);
+  EXPECT_EQ(Compute(0ULL), 0ULL);
+  EXPECT_EQ(Compute(1ULL), 1ULL);
+  EXPECT_EQ(Compute(2ULL), 1ULL);
+  EXPECT_EQ(Compute(3ULL), 2ULL);
+  EXPECT_EQ(Compute(10ULL), 55ULL);
+  EXPECT_EQ(Compute(20ULL), 6765ULL);
+  EXPECT_EQ(Compute(30ULL), 832040ULL);
 }
 
-TEST(FibonacciMatrixTest, MatchesReferenceImplementationForAllSupportedIndices) {
-    using fibonacci_matrix::Compute;
-    using fibonacci_matrix::ComputeReferenceIterative;
-    using fibonacci_matrix::kMaxSupportedIndex;
+TEST(FibonacciMatrixTest,
+     MatchesReferenceImplementationForAllSupportedIndices) {
+  using fibonacci_matrix::Compute;
+  using fibonacci_matrix::ComputeReferenceIterative;
+  using fibonacci_matrix::kMaxSupportedIndex;
 
-    for (unsigned long long int index = 0ULL; index <= kMaxSupportedIndex; ++index) {
-        EXPECT_EQ(Compute(index), ComputeReferenceIterative(index)) << "index = " << index;
-    }
+  for (unsigned long long int index = 0ULL; index <= kMaxSupportedIndex;
+       ++index) {
+    EXPECT_EQ(Compute(index), ComputeReferenceIterative(index))
+      << "index = " << index;
+  }
 }
 
 TEST(FibonacciMatrixTest, ReturnsLargestExactlyRepresentableValue) {
-    using fibonacci_matrix::Compute;
+  using fibonacci_matrix::Compute;
 
-    EXPECT_EQ(Compute(93ULL), 12200160415121876738ULL);
+  EXPECT_EQ(Compute(93ULL), 12200160415121876738ULL);
 }
 
 TEST(FibonacciMatrixTest, ThrowsOnOverflowingIndex) {
-    using fibonacci_matrix::Compute;
+  using fibonacci_matrix::Compute;
 
-    EXPECT_THROW(static_cast<void>(Compute(94ULL)), std::overflow_error);
-    EXPECT_THROW(static_cast<void>(Compute(100ULL)), std::overflow_error);
+  EXPECT_THROW(static_cast<void>(Compute(94ULL)), std::overflow_error);
+  EXPECT_THROW(static_cast<void>(Compute(100ULL)), std::overflow_error);
 }
 
 TEST(FibonacciMatrixTest, ZeroPowerProducesIdentityMatrix) {
-    using fibonacci_matrix::MatrixType;
-    using fibonacci_matrix::PowerMatrix;
+  using fibonacci_matrix::MatrixType;
+  using fibonacci_matrix::PowerMatrix;
 
-    const MatrixType matrix = PowerMatrix(0ULL);
+  const MatrixType matrix = PowerMatrix(0ULL);
 
-    EXPECT_EQ(matrix(0U, 0U), 1ULL);
-    EXPECT_EQ(matrix(0U, 1U), 0ULL);
-    EXPECT_EQ(matrix(1U, 0U), 0ULL);
-    EXPECT_EQ(matrix(1U, 1U), 1ULL);
+  EXPECT_EQ(matrix(0U, 0U), 1ULL);
+  EXPECT_EQ(matrix(0U, 1U), 0ULL);
+  EXPECT_EQ(matrix(1U, 0U), 0ULL);
+  EXPECT_EQ(matrix(1U, 1U), 1ULL);
 }
 
 int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

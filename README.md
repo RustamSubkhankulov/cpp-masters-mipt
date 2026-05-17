@@ -15,7 +15,9 @@ Solutions added for the following problems:
 - Module 08: 08-01 - 08-05;
 - Module 09: 09-01 - 09-10;
 - Module 10: 10-01, 10-03 - 10-05;
-- Module 11: 11-01, 11-02;
+- Module 11: 11-01, 11-03 - 11-06;
+- Module 12: 12-01 - 12-05;
+- Module 13: 13-01 - 13-04;
 
 #### Building
 
